@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from reversebypass.shop/ok/91club/index.html by HTTrack Website Copier/3.x [XR&CO'2017], Tue, 24 Dec 2024 13:27:46 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Features</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../../../cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="title">91 CLUB</h1>
+        <nav class="navbar">
+            <button id="bigSmallBtn" onclick="activateFeature('bigSmall')">Big/Small</button>
+            <button id="numberBtn" onclick="activateFeature('number')">Number</button>
+            <button id="minesBtn" onclick="activateFeature('mines')">Mines</button>
+        </nav>
+    </header>
+    <main class="main-content">
+        <!-- Big/Small Section -->
+        <section id="big-small-section" class="hidden">
+            <div class="grid">
+                <div id="big-small-result" class="result-box">Result</div>
+            </div>
+            <button class="check-btn" onclick="generateBigSmall()">Check</button>
+
+            <!-- Timer and Period Number -->
+            <div class="timer-container">
+                <div id="period-number" class="info-box">Period Number: Loading...</div>
+                <div id="timer" class="info-box">Timer: 00:00</div>
+            </div>
+        </section>
+
+        <!-- Number Section -->
+        <section id="number-section" class="hidden">
+            <div class="grid">
+                <div id="number-result" class="result-box">Result</div>
+            </div>
+            <button class="check-btn" onclick="generateNumber()">Check</button>
+        </section>
+
+        <!-- Mines Section -->
+        <section id="mines-section" class="hidden">
+            <div class="grid">
+                <!-- 25 boxes dynamically created using JavaScript -->
+            </div>
+            <button class="check-btn" onclick="highlightRandomBoxes()">Check</button>
+        </section>
+    </main>
+
+    <footer>
+        <div class="help-container">
+            <a href="#" class="help-link animate__animated animate__pulse animate__infinite">Help</a>
+        </div>
+    </footer>
+
+    <script>
+        // Timer and Period Number Logic
+        function startTimerAndPeriodNumber() {
+            const timerElement = document.getElementById('timer');
+            const periodElement = document.getElementById('period-number');
+
+            setInterval(() => {
+                const now = new Date();
+                const timeZoneOffset = 5.5 * 60 * 60 * 1000; // Offset for IST (GMT+5:30)
+                const currentTime = new Date(now.getTime() + timeZoneOffset);
+
+                // Calculate remaining seconds in the current minute
+                const seconds = currentTime.getUTCSeconds();
+                const remainingSeconds = 60 - seconds;
+
+                // Calculate total minutes since 7:30 AM
+                const totalMinutes = currentTime.getUTCHours() * 60 + currentTime.getUTCMinutes();
+                let adjustedMinutes = totalMinutes - (7 * 60 + 30);
+                if (adjustedMinutes < 0) adjustedMinutes += 24 * 60;
+
+                // Period number (yyyyMMdd + 1-minute interval)
+                const periodNumber = `${currentTime.getUTCFullYear()}${String(currentTime.getUTCMonth() + 1).padStart(2, '0')}${String(currentTime.getUTCDate()).padStart(2, '0')}0${10001 + adjustedMinutes}`;
+
+                // Update Timer and Period Number
+                periodElement.textContent = `Period Number: ${periodNumber}`;
+                timerElement.textContent = `Timer: 00:${String(remainingSeconds).padStart(2, '0')}`;
+            }, 1000); // Update every second
+        }
+
+        // Call Timer function on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            startTimerAndPeriodNumber();
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+<!-- Mirrored from reversebypass.shop/ok/91club/index.html by HTTrack Website Copier/3.x [XR&CO'2017], Tue, 24 Dec 2024 13:27:49 GMT -->
+</html>
